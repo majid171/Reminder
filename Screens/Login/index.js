@@ -3,6 +3,7 @@ import s from './style';
 import {View, Text, Button} from 'react-native';
 import * as Google from 'expo-google-app-auth';
 import firebase from 'firebase';
+import * as Facebook from 'expo-facebook';
 
 export default class Login extends Component{
 
@@ -93,12 +94,51 @@ export default class Login extends Component{
         }
       }
 
+    signInWithFacebookAsync = async () =>{
+      await Facebook.initializeAsync('2442362725891867');
+      const { type, token } = await Facebook.logInWithReadPermissionsAsync('2442362725891867', { permissions: ['public_profile'] });
+      
+      if(type == 'success'){
+        const credential = firebase.auth.FacebookAuthProvider.credential(token);
+
+        firebase.auth().signInWithCredential(credential).then(function (result) {
+          if (result.additionalUserInfo.isNewUser) {
+            firebase.database().ref('/users/' + result.user.uid)
+                    .set({
+                        email: result.user.email,
+                        profilePicture: result.user.photoURL,
+                        firstName: result.additionalUserInfo.profile.first_name,
+                        lastName: result.additionalUserInfo.profile.last_name,
+                        created_at: Date.now()
+                      }).then(function(snapshot){});
+          }
+          else{
+            firebase.database().ref('/users/' + result.user.uid).update({last_logged_in: Date.now()});
+          }
+          }).catch(function (error) {
+              console.log('error');
+              // Handle Errors here.
+              var errorCode = error.code;
+              var errorMessage = error.message;
+              // The email of the user's account used.
+              var email = error.email;
+              // The firebase.auth.AuthCredential type that was used.
+              var credential = error.credential;
+              // ...
+          });
+      }
+    }
+
     render(){
         return(
             <View style={s.container}>
                 <Button 
                     title="Sign in with Google"
                     onPress = {() => this.signInWithGoogleAsync()}
+                />
+                <Button 
+                    title="Sign in with Facebook"
+                    onPress = {() => this.signInWithFacebookAsync()}
                 />
             </View>
         );

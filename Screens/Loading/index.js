@@ -8,8 +8,8 @@ export default class Loading extends Component{
     checkIfLoggedIn = () => {
 
         firebase.auth().onAuthStateChanged(function(user){
-            
             if(user){
+                // console.log(user);
                 this.props.navigation.navigate('Dashboard');
             }
             else{
