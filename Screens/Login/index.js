@@ -4,13 +4,9 @@ import { View, Text, Button, TextInput, KeyboardAvoidingView, TouchableOpacity, 
 import * as Google from 'expo-google-app-auth';
 import firebase from 'firebase';
 import * as Facebook from 'expo-facebook';
+import {googleIOSClientID, facebookAppID} from '../../Components/config';
 
 export default class Login extends Component {
-
-  state = {
-    email: '',
-    password: '',
-  }
 
   isUserEqual = (googleUser, firebaseUser) => {
     if (firebaseUser) {
@@ -26,7 +22,7 @@ export default class Login extends Component {
   }
 
   onSignIn = googleUser => {
-    console.log('Google Auth Response', googleUser);
+    // console.log('Google Auth Response', googleUser);
     var unsubscribe = firebase.auth().onAuthStateChanged(function (firebaseUser) {
       unsubscribe();
       if (!this.isUserEqual(googleUser, firebaseUser)) {
@@ -35,7 +31,7 @@ export default class Login extends Component {
           googleUser.accessToken
         );
         firebase.auth().signInWithCredential(credential).then(function (result) {
-          console.log('User Signed In');
+          // console.log('User Signed In');
           if (result.additionalUserInfo.isNewUser) {
             firebase
               .database()
@@ -48,7 +44,7 @@ export default class Login extends Component {
                 created_at: Date.now()
               })
               .then(function (snapshot) {
-                console.log('Snapshot', snapshot);
+                // console.log('Snapshot', snapshot);
               });
           } else {
             firebase
@@ -66,7 +62,7 @@ export default class Login extends Component {
             var credential = error.credential;
           });
       } else {
-        console.log('User already signed-in Firebase.');
+        // console.log('User already signed-in Firebase.');
       }
     }.bind(this));
   }
@@ -75,7 +71,7 @@ export default class Login extends Component {
     try {
       const result = await Google.logInAsync({
         // androidClientId: YOUR_CLIENT_ID_HERE,
-        iosClientId: '779486166693-h4l05uppjr72j16eht8hoj4e63eelb0g.apps.googleusercontent.com',
+        iosClientId: googleIOSClientID,
         scopes: ['profile', 'email'],
       });
 
@@ -91,8 +87,8 @@ export default class Login extends Component {
   }
 
   signInWithFacebookAsync = async () => {
-    await Facebook.initializeAsync('2442362725891867');
-    const { type, token } = await Facebook.logInWithReadPermissionsAsync('2442362725891867', { permissions: ['public_profile'] });
+    await Facebook.initializeAsync(facebookAppID);
+    const { type, token } = await Facebook.logInWithReadPermissionsAsync(facebookAppID, { permissions: ['public_profile'] });
 
     if (type == 'success') {
       const credential = firebase.auth.FacebookAuthProvider.credential(token);
@@ -121,50 +117,6 @@ export default class Login extends Component {
     }
   }
 
-  // render() {
-  //   return (
-  //     <View style={s.container}>
-  //       <View style={s.titleContainer}>
-  //         <Text style={s.title}>Reminder</Text>
-  //       </View>
-  //       <KeyboardAvoidingView style={s.bodyContainer}>
-  //         <TextInput
-  //           style={s.input}
-  //           maxLength={25}
-  //           placeholder='Email'
-  //           placeholderTextColor='white'
-  //           keyboardAppearance='dark'
-  //           label='Email'
-  //           value={this.state.email}
-  //           onChangeText={email => this.setState({ email })}
-  //         />
-  //         <TextInput
-  //           secureTextEntry={true}
-  //           style={s.input}
-  //           maxLength={25}
-  //           placeholder="Password"
-  //           placeholderTextColor='white'
-  //           keyboardAppearance='dark'
-  //           label='Password'
-  //           value={this.state.password}
-  //           onChangeText={password => this.setState({ password })}
-  //         />
-  //         <Button 
-  //           title="Log In"
-  //           onPress = {() => alert('Button Pressed')}
-  //         />
-  //         <Text>New to Reminder? Sign Up!</Text>
-  //         <Button
-  //           title="Sign in with Google"
-  //           onPress={() => this.signInWithGoogleAsync()}
-  //         />
-  //         <Button
-  //           title="Sign in with Facebook"
-  //           onPress={() => this.signInWithFacebookAsync()}
-  //         />
-  //       </KeyboardAvoidingView>
-  //     </View>
-  //   );
   render() {
     return (
       <View style={s.container}>
@@ -188,8 +140,12 @@ export default class Login extends Component {
             <View style={s.line}></View>
           </View>
           <View style={s.connectContainer}>
-            <TouchableOpacity><Text>Sign in with Google</Text></TouchableOpacity>
-            <TouchableOpacity><Text>Sign in with Facebook</Text></TouchableOpacity>
+            <TouchableOpacity style={s.googleButton} onPress={() => this.signInWithGoogleAsync()}>
+              <Text style={s.buttonText}>Sign in with Google</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={s.facebookButton} onPress={() => this.signInWithFacebookAsync()}>
+              <Text style={s.buttonText}>Sign in with Facebook</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </View>

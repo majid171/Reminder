@@ -5,9 +5,9 @@ import * as firebase from 'firebase';
 import Login from './Screens/Login';
 import Dashboard from './Screens/Dashboard';
 import Loading from './Screens/Loading';
-import {config} from './Components/config';
+import {DB} from './Components/config';
 
-firebase.initializeApp(config);
+firebase.initializeApp(DB);
 
 const AppSwitchNavigator = createSwitchNavigator({
   Loading: Loading,

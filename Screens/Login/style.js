@@ -50,11 +50,11 @@ const style = StyleSheet.create({
         borderBottomLeftRadius: 50,
         borderBottomRightRadius: 50,
         alignItems: 'center',
-        paddingTop: 80,
+        paddingTop: 40,
     },
 
     logo:{
-        height: 200,
+        height: 240,
         width: 180,
     },
 
@@ -130,10 +130,31 @@ const style = StyleSheet.create({
 
     connectContainer:{
         top: '15%',
-        backgroundColor: 'pink',
+        backgroundColor: '#2C2F33',
         alignItems: 'center',
         width: '100%',
         height: '35%',
+        justifyContent: 'center'
+    },
+
+    googleButton:{
+        backgroundColor: '#4285F4',
+        width: '70%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: 50,
+        bottom: 10,
+        borderRadius: 7,
+    },
+
+    facebookButton:{
+        top: 10,
+        backgroundColor: '#3b5998',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '70%',
+        height: 50,
+        borderRadius: 7,
     },
 
 });
