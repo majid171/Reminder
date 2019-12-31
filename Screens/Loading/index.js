@@ -13,7 +13,7 @@ export default class Loading extends Component{
                 this.props.navigation.navigate('Dashboard');
             }
             else{
-                this.props.navigation.navigate('Login');
+                this.props.navigation.navigate('Welcome');
             }
 
         }.bind(this));

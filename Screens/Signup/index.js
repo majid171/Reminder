@@ -3,15 +3,16 @@ import s from './style';
 import { View, Text, TextInput, TouchableOpacity, Image, Button } from 'react-native';
 import firebase from 'firebase';
 
-export default class Login extends Component {
+export default class Signup extends Component {
 
     state = {
         email: '',
-        password: ''
+        password1: '',
+        password2: ''
     }
 
-    signIn = () =>{
-        alert('Signing in');
+    signUp = () =>{
+        alert('Signing Up');
     }
 
     render() {
@@ -34,11 +35,12 @@ export default class Login extends Component {
                     <TextInput style={s.input} keyboardAppearance={'dark'} maxLength={35} placeholder="Email" placeholderTextColor='white' value={this.state.text}
                         onChangeText={email => this.setState({ email })}></TextInput>
                     <TextInput style={s.input} keyboardAppearance={'dark'} maxLength={35} placeholder="Password" placeholderTextColor='white' secureTextEntry={true} value={this.state.text}
-                        onChangeText={password => this.setState({ password })}></TextInput>
-                    <TouchableOpacity style={s.signInButton} onPress={() => this.signIn()}>
-                        <Text style={s.buttonText}>Sign In</Text>
+                        onChangeText={password1 => this.setState({ password1 })}></TextInput>
+                    <TextInput style={s.input} keyboardAppearance={'dark'} maxLength={35} placeholder="Vertify password" placeholderTextColor='white' secureTextEntry={true} value={this.state.text}
+                        onChangeText={password2=> this.setState({ password2 })}></TextInput>
+                    <TouchableOpacity style={s.signInButton} onPress={() => this.signUp()}>
+                        <Text style={s.buttonText}>Sign Up</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity><Text style={s.forgetText}>Forget Password?</Text></TouchableOpacity>
                 </View>
             </View>
         );

@@ -2,17 +2,21 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import {createSwitchNavigator, createAppContainer} from 'react-navigation';
 import * as firebase from 'firebase';
-import Login from './Screens/Login';
+import Welcome from './Screens/Welcome';
 import Dashboard from './Screens/Dashboard';
 import Loading from './Screens/Loading';
+import Login from './Screens/Login';
+import Signup from './Screens/Signup';
 import {DB} from './Components/config';
 
 firebase.initializeApp(DB);
 
 const AppSwitchNavigator = createSwitchNavigator({
   Loading: Loading,
+  Welcome: Welcome,
+  Dashboard: Dashboard,
   Login: Login,
-  Dashboard: Dashboard
+  Signup: Signup
 });
 const AppNavigator = createAppContainer(AppSwitchNavigator);
 
